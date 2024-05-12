@@ -47,5 +47,3 @@ connection
         console.log(`Error database connection: ${error.message}`);
         process.exit(1);
     })
-
-module.exports = app;
