@@ -10,32 +10,29 @@ app.use(logger('tiny'));
 app.use(express.json());
 app.use(cors());
 
-const contactsRouter = require('./api');
+const contactsRouter = require('./api/contacts');
+const usersRouter = require('./api/users');
 
-app.use('/api', contactsRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/contacts', contactsRouter);
 
 app.use((_, res, __) => {
     res.status(404).json({
         status: 'error',
         code: 404,
-        message: 'Use api on routes: /api/contacts',
+        message: 'Use api on routes: /api/contacts, /api/users',
         data: 'Not Found'
     })
 })
 
 app.use((error, _, res, __) => {
-    res.status(500).json({
-        status: 'fail',
-        code: 500,
-        message: error.message,
-        data: 'Internal Server Error'
-    })
+    const { status = 500, message } = error;
+    res.status(status).json({ status, message })
 })
 
-const PORT = process.env.PORT || 3000;
-const uriDb = process.env.DB_HOST;
+const { PORT = 3000, DB_HOST } = process.env;
 
-const connection = mongoose.connect(uriDb);
+const connection = mongoose.connect(DB_HOST);
 
 connection
     .then(() => {
