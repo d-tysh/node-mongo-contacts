@@ -113,7 +113,6 @@ const updateFavorite = async (req, res, next) => {
 const remove = async (req, res, next) => {
     const { id } = req.params;
     const { _id: owner } = req.user;
-    console.log(owner);
     try {
         const result = await service.removeContact(id, owner);
         if (!result) {

@@ -8,7 +8,6 @@ const register = async (req, res, next) => {
     try {
         const user = await User.findOne({ email });
         if (user) {
-            console.log(user);
             res.status(409).json({
                 status: 'conflict',
                 code: 409,
@@ -63,7 +62,6 @@ const login = async (req, res, next) => {
 
 const logout = async (req, res) => {
     const { _id: id } = req.user;
-    console.log(id);
     await User.findByIdAndUpdate(id, { token: '' });
     res.status(200).json({
         message: 'Logout successful'
